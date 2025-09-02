@@ -7,7 +7,7 @@ def CreateBoards(Difficulty):
     size = gameStats[1]
     MaxMines = gameStats[0]
     gameBoard = [["?" for c in range(size)] for r in range(size)]
-    gameBoardState = [["0" for i in range(size)] for j in range(size)]
+    gameBoardState = [[0 for i in range(size)] for j in range(size)]
 
     Pubulate_gameBoardState_with_bombs(gameBoardState,MaxMines,size)
     Pubulate_gameBoardState_with_numbers(gameBoardState)

@@ -14,12 +14,12 @@ class TestCLi(unittest.TestCase):
     def test_Abc_27(self):
         data = 27
         result = CLI.GetABCFromNumber(data)
-        self.assertEqual(result,"ZA","Should be ZA")
+        self.assertEqual(result,"AA","Should be ZA")
     
     def test_Abc_53(self):
         data = 53
         result = CLI.GetABCFromNumber(data)
-        self.assertEqual(result,"ZZA","Should be ZZA")
+        self.assertEqual(result,"BA","Should be ZZA")
 
     def test_printline_three_columns(self):
         captured = io.StringIO()

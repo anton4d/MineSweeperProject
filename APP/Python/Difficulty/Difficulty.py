@@ -1,4 +1,4 @@
-def getDifficultyStats(Difficulty):
+def getDifficultyStats(Difficulty:int):
     '''
     Difficultystats is a list with 3 attributes
     1: max mines
@@ -19,5 +19,6 @@ def getDifficultyStats(Difficulty):
         DifficultyStats.append(24)
         DifficultyStats.append("Advanced")
     else:
-        print("this difficulty does not exist yet!!")
+        DifficultyStats.append("Error")
+    
     return DifficultyStats

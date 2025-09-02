@@ -5,12 +5,17 @@ def ShowGameState(GameBoard,Difficulty,MinesFound,timeStamp):
     PrintGameStats(Difficulty,MinesFound,timeStamp)
     PrintBoard(GameBoard)
 
-def PrintGameStats(Difficulty,MinesFound,TimeStamp):
-    DifficultyStats= getDifficultyStats(Difficulty)
+def PrintGameStats(Difficulty, MinesFound, TimeStamp):
+    DifficultyStats = getDifficultyStats(Difficulty)
     MaxMines = DifficultyStats[0]
-    DifficultyStr=DifficultyStats[2]
-    print(f"Mines: {MinesFound}/{MaxMines}\tTime: {TimeStamp}\tdifficulty: {DifficultyStr}")
-
+    DifficultyStr = DifficultyStats[2]
+    mines = MinesFound["count"]
+    minutes = TimeStamp // 60
+    minutes = int(minutes)
+    seconds = TimeStamp % 60
+    seconds = int(seconds)
+    
+    print(f"Mines: {mines}/{MaxMines}\tTime: {minutes:02d}:{seconds:02d}\tDifficulty: {DifficultyStr}")
 
 
 def PrintBoard(GameBoard):
@@ -53,30 +58,20 @@ def PrintLine(row):
 def GetABCFromNumber(Number):
     '''Takes a number shuch as 1 and returns the coresponding 1=A
         if a number goes over 26 it will probegate like this 
-        27 will result in ZA since 27 - 26 is 1
+        27 will result in AA since 27 - 26 is 1
     '''
-    abc = ["A","B","C","D","E",
-            "F","G","H","I","J",
-            "K","L","M","N","O",
-            "P","Q","R","S","T",
-            "U","V","W","X","Y",
-            "Z"]
-    Lenght = len(abc)
-    ReturnString= ""
-    if Number > Lenght:
-        newNumber = Number - Lenght
-        Number = Lenght
-        ReturnString += abc[Number-1]+GetABCFromNumber(newNumber)
-    else:
-        ReturnString += abc[Number-1]
-    return ReturnString
-
+    result = ""
+   
+    while Number > 0:
+        Number, remainder = divmod(Number - 1, 26)
+        result = chr(65 + remainder) + result
+    return result
 
 
 if __name__ == "__main__":
-    rows, cols = (7, 5)
+    rows, cols = (5, 27)
     gameBoard = [["?" for i in range(cols)] for j in range(rows)]
     MinesFound= 5
-    timeStamp="10sec"
+    timeStamp=60
     Difficulty=2
     ShowGameState(gameBoard,Difficulty,MinesFound,timeStamp)
