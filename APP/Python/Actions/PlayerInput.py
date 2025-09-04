@@ -1,5 +1,5 @@
 from Difficulty import getDifficultyStats
-import re
+import re, sys
 
 
 
@@ -24,20 +24,25 @@ def Get_difficulty_player_cli():
 def Take_command_cli(GameBoard, gameState,Minesfound,difficulty):
     command_map = {
         "help": (lambda: Print_commands(command_map),"Show available commands"),
-        "h": (lambda: Print_commands(command_map),"Show available commands"),
-        "x": (lambda: Mark_a_flag(GameBoard, Minesfound),"Mark a Mine on the board"),
-        "mine": (lambda: Mark_a_flag(GameBoard, Minesfound),"Mark a flag on the board"),
-        "flag": (lambda: Mark_a_flag(GameBoard, Minesfound),"Mark a flag on the board"),
-        "step": (lambda: Step_on_space(GameBoard, gameState,difficulty),"Step on a space"),
-        "dig": (lambda: Step_on_space(GameBoard, gameState,difficulty),"Step on a space"),
+        "h": (lambda: Print_commands(command_map),"short help command"),
+        "x": (lambda: Mark_a_flag(GameBoard, Minesfound,position),"Mark a Mine on the board"),
+        "mine": (lambda: Mark_a_flag(GameBoard, Minesfound,position),"Mark a flag on the board"),
+        "flag": (lambda: Mark_a_flag(GameBoard, Minesfound,position),"Mark a flag on the board"),
+        "step": (lambda: Step_on_space(GameBoard, gameState,difficulty,position),"Step on a space"),
+        "dig": (lambda: Step_on_space(GameBoard, gameState,difficulty,position),"Step on a space"),
         "difficulty":(lambda:Get_difficulty_player_cli(),"Change Difficulty and reset"),
-        "d":(lambda:Get_difficulty_player_cli(),"Change Difficulty and reset")
+        "d":(lambda:Get_difficulty_player_cli(),"Change Difficulty and reset"),
+        "exit":(lambda:quit_command(),"Exit the game")
     }
     prompt = "Write Command:\t"
     ErrorMessage="Unknown command. Type 'help' for options."
     ReturnParameter = ""
-
-    command = input(prompt).strip()
+    user_input = input(prompt).strip()
+    parts = user_input.split(" ", 1)
+    command = parts[0].strip()
+    position = None
+    if len(parts) > 1:
+        position = parts[1].strip()
     normalized = command.lower()
     coord_pattern = r"^[A-Za-z]+[0-9]+$"
 
@@ -106,6 +111,8 @@ def Step_on_space(GameBoard,GameState,difficulty,rc=None):
     
     return "Step"
 
+def quit_command():
+    sys.exit(0)
 
 def Zero_Updater(GameBoard,GameState,Row,Col):
     cords = [(Row,Col)]
@@ -136,12 +143,12 @@ def Check_if_wone(GameBoard,difficulty):
     mines = getDifficultyStats(difficulty)
     for row in GameBoard:
         for col in row:
-            print(col)
-            if col == "?":
+            #print(col)
+            if col == "?" or col == "F":
                 count +=1
     print(count)
-    print(mines)
-    if count <= mines[1]:
+    print(mines[1])
+    if count <= mines[0]:
         
         return True
     return False
